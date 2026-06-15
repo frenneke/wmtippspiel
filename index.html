@@ -580,9 +580,11 @@ function resultCard(m){
   const rh_i=el.querySelector(".rh"),ra_i=el.querySelector(".ra");
   async function saveRes(){
     const h=rh_i.value,a=ra_i.value;
+    const had=!!state.results[m.no];
     try{
-      if(h===""||a==="")state=await api("setResult",{no:m.no,h:"",a:""});
-      else state=await api("setResult",{no:m.no,h,a});
+      if(h!==""&&a!==""){ state=await api("setResult",{no:m.no,h,a}); }
+      else if(h===""&&a===""&&had){ state=await api("setResult",{no:m.no,h:"",a:""}); }
+      else { return; }
       setOnline(true);
     }catch(e){setOnline(false);toast("Keine Verbindung.");return;}
     renderResults();
